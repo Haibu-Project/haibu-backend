@@ -5,6 +5,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import prisma from "./database/prisma";
 import userRoutes from "./modules/users/user.routes";
+import { setupSwagger } from "./config/swagger";
 
 dotenv.config();
 
@@ -35,6 +36,9 @@ async function connectDB() {
 
 // Rutas
 app.use("/api/users", userRoutes);
+
+setupSwagger(app);
+
 
 // Iniciar Servidor
 const PORT = process.env.PORT || 5000;
