@@ -19,20 +19,6 @@ model Like {
   @@unique([userId, postId]) // Ensure a user can only like a post once
 }
 
-model User {
-  id            String        @id @default(uuid())
-  username      String
-  walletAddress String        @unique
-  email         String        @unique
-  password      String
-  createdAt     DateTime      @default(now())
-  sessions      Session[]
-  posts         Post[]
-  comments      Comment[]
-  likes         Like[]
-  CommentLike   CommentLike[]
-}
-
 model Post {
   id        String   @id @default(uuid())
   title     String
@@ -77,4 +63,35 @@ model Session {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  recipientId String // The user receiving the notification
+  senderId    String // The user who triggered the event
+  type        String // e.g., "LIKE_POST", "NEW_COMMENT"
+  postId      String? // ID of the related post (optional)
+  commentId   String? // ID of the related comment (optional)
+  isRead      Boolean  @default(false) // Whether the user has seen the notification
+  createdAt   DateTime @default(now())
+
+  recipient User @relation(name: "RecipientNotifications", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender    User @relation(name: "SenderNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String        @id @default(uuid())
+  username      String
+  walletAddress String        @unique
+  email         String        @unique
+  password      String
+  createdAt     DateTime      @default(now())
+  sessions      Session[]
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+  CommentLike   CommentLike[]
+
+  sentNotifications     Notification[] @relation(name: "SenderNotifications")
+  receivedNotifications Notification[] @relation(name: "RecipientNotifications")
 }
