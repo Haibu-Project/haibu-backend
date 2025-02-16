@@ -7,27 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Comment {
+model Like {
   id        String   @id @default(uuid())
-  content   String
   userId    String
   postId    String
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId]) // Ensure a user can only like a post once
 }
 
 model User {
-  id            String   @id @default(uuid())
+  id            String        @id @default(uuid())
   username      String
-  walletAddress String   @unique
-  email         String   @unique
+  walletAddress String        @unique
+  email         String        @unique
   password      String
-  createdAt     DateTime @default(now())
+  createdAt     DateTime      @default(now())
   sessions      Session[]
   posts         Post[]
   comments      Comment[]
+  likes         Like[]
+  CommentLike   CommentLike[]
 }
 
 model Post {
@@ -37,10 +40,34 @@ model Post {
   userId    String
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  likes    Like[]
 }
 
+model CommentLike {
+  id        String   @id @default(uuid())
+  userId    String
+  commentId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, commentId]) // Ensure a user can only like a comment once
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post         Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  commentLikes CommentLike[]
+}
 
 model Session {
   id        String   @id @default(uuid())
@@ -49,6 +76,5 @@ model Session {
   expiresAt DateTime
   createdAt DateTime @default(now())
 
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
-

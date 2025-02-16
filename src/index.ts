@@ -7,6 +7,8 @@ import prisma from "./database/prisma";
 import userRoutes from "./modules/users/user.routes";
 import postRoutes from "./modules/posts/post.routes";
 import { setupSwagger } from "./config/swagger";
+import likeRoutes from "./modules/likes/like.routes";
+
 
 dotenv.config();
 
@@ -38,6 +40,8 @@ async function connectDB() {
 // Rutas
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/likes", likeRoutes);
+
 
 setupSwagger(app);
 
