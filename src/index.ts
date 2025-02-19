@@ -38,6 +38,9 @@ async function connectDB() {
 }
 
 // Rutas
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);

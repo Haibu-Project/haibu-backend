@@ -86,11 +86,12 @@ model User {
   email         String        @unique
   password      String
   createdAt     DateTime      @default(now())
+
   sessions      Session[]
   posts         Post[]
   comments      Comment[]
   likes         Like[]
-  CommentLike   CommentLike[]
+  commentLikes  CommentLike[] // Fix: renamed to lowercase for consistency
 
   sentNotifications     Notification[] @relation(name: "SenderNotifications")
   receivedNotifications Notification[] @relation(name: "RecipientNotifications")

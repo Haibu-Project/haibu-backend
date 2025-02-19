@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
 import { addMinutes } from "date-fns";
 
+
 const SECRET_KEY = process.env.JWT_SECRET || "super_secret_key";
 
 export class AuthService {
@@ -19,24 +20,27 @@ export class AuthService {
     });
   }
 
-  static async login({ walletAddress }: LoginDto) {
+  static async login({ walletAddress, password }: LoginDto) {
     const user = await prisma.user.findUnique({ where: { walletAddress } });
     if (!user) return null;
-
+  
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) return null; 
+  
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
-
-    // Crear una sesión en la base de datos
+  
     const expiresAt = addMinutes(new Date(), 60);
     await prisma.session.upsert({
       where: { userId: user.id },
       update: { token, expiresAt },
       create: { userId: user.id, token, expiresAt },
     });
-
+  
     return { user, token };
   }
+  
 
   static async logout(userId: string) {
     await prisma.session.delete({ where: { userId } });

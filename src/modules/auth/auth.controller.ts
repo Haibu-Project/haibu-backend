@@ -30,21 +30,3 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: "Failed to login" });
   }
 };
-
-/**
- * Handle forgot password.
- */
-export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { email } = req.body as ForgotPasswordDto;
-    const result = await AuthService.forgotPassword(email);
-    if (!result) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to process forgot password request" });
-  }
-};
