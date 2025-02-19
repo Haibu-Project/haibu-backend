@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { register, login, forgotPassword } from "./auth.controller";
+import { register, login,  } from "./auth.controller";
 import { validateDto } from "../../middleware/validate-dto.middleware";
-import { RegisterDto, LoginDto, ForgotPasswordDto } from "./dto/auth.dto";
+import { RegisterDto, LoginDto,  } from "./dto/auth.dto";
 
 const router = Router();
 
@@ -22,14 +22,4 @@ router.post("/register", validateDto(RegisterDto), register);
  *     tags: [Auth]
  */
 router.post("/login", validateDto(LoginDto), login);
-
-/**
- * @swagger
- * /api/auth/forgot-password:
- *   post:
- *     summary: Forgot password
- *     tags: [Auth]
- */
-router.post("/forgot-password", validateDto(ForgotPasswordDto), forgotPassword);
-
 export default router;
