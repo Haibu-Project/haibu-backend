@@ -13,11 +13,13 @@ import likeRoutes from "./modules/likes/like.routes";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 // Middlewares de seguridad
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
