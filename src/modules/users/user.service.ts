@@ -1,41 +1,40 @@
 import prisma from "../../database/prisma";
 import { hashPassword, verifyPassword } from "../../utils/auth.utils";
+import { CreateUserDto, UpdateUserDto, ValidateUserDto } from "./dto/user.dto";
 
 export class UserService {
   static async getAllUsers() {
     return prisma.user.findMany({
-      select: { id: true, username: true, email: true, createdAt: true }
+      select: { id: true, username: true, email: true, createdAt: true, walletAddress: true }
     });
   }
 
   static async getUserById(id: string) {
     return prisma.user.findUnique({
       where: { id },
-      select: { id: true, username: true, email: true, createdAt: true }
+      select: { id: true, username: true, email: true, createdAt: true, walletAddress: true }
     });
   }
 
-  static async createUser(username: string, email: string, password: string) {
+  static async createUser({ username, walletAddress, email, password }: CreateUserDto) {
     const hashedPassword = await hashPassword(password);
     return prisma.user.create({
-      data: { username, email, password: hashedPassword }
+      data: { username, walletAddress, email, password: hashedPassword }
     });
   }
 
-  static async updateUser(id: string, username?: string, email?: string) {
+  static async updateUser(id: string, updateData: UpdateUserDto) {
     return prisma.user.update({
       where: { id },
-      data: { username, email }
+      data: updateData,
     });
   }
 
   static async deleteUser(id: string) {
-    return prisma.user.delete({
-      where: { id }
-    });
+    return prisma.user.delete({ where: { id } });
   }
 
-  static async validateUser(email: string, password: string) {
+  static async validateUser({ email, password }: ValidateUserDto) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return null;
 

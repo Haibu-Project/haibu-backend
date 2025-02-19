@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { UserService } from "./user.service";
+import { CreateUserDto, UpdateUserDto, ValidateUserDto } from "./dto/user.dto";
+import { validateDto } from "../../middleware/validate-dto.middleware";
 
 /**
  * Get all users.
@@ -35,14 +37,10 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
  */
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
-      res.status(400).json({ error: "All fields are required" });
-      return;
-    }
-
-    const newUser = await UserService.createUser(username, email, password);
-    res.status(201).json({ message: "User created successfully", user: newUser });
+    await validateDto(CreateUserDto)(req, res, async () => {
+      const newUser = await UserService.createUser(req.body);
+      res.status(201).json({ message: "User created successfully", user: newUser });
+    });
   } catch (error) {
     res.status(400).json({ error: "User creation failed" });
   }
@@ -53,21 +51,15 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
  */
 export const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
-    const { username, email } = req.body;
-
-    if (!username && !email) {
-      res.status(400).json({ error: "At least one field (username or email) is required to update" });
-      return;
-    }
-
-    const updatedUser = await UserService.updateUser(id, username, email);
-    if (!updatedUser) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-
-    res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    await validateDto(UpdateUserDto)(req, res, async () => {
+      const { id } = req.params;
+      const updatedUser = await UserService.updateUser(id, req.body);
+      if (!updatedUser) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+      res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    });
   } catch (error) {
     res.status(500).json({ error: "Failed to update user" });
   }
