@@ -9,11 +9,11 @@ import likeRoutes from "./modules/likes/like.routes";
 
 dotenv.config();
 
-const app: Express = express(); // ✅ Define el tipo explícitamente como Express
+const app: Express = express();
 
 app.set("trust proxy", 1);
 
-app.use(express.json()); // ✅ Ahora no dará error
+app.use(express.json()); 
 app.use(cors());
 app.use(helmet());
 
@@ -27,4 +27,4 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).send("OK");
 });
 
-export default app; // ✅ Para que Vercel lo detecte correctamente
+export default app;
