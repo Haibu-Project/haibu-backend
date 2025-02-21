@@ -11,6 +11,7 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
     const users = await UserService.getAllUsers();
     res.status(200).json(users);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to fetch users" });
   }
 };
