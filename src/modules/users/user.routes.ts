@@ -1,7 +1,11 @@
 import { Router } from "express";
-import { getAllUsers, getUserById, createUser, deleteUser, updateUser } from "./user.controller";
+import { getAllUsers, getUserById, createUser, deleteUser, updateUser, getHealth } from "./user.controller";
 
 const router = Router();
+
+
+
+router.get("/health", getHealth);
 
 /**
  * @swagger
