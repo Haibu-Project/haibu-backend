@@ -16,9 +16,9 @@ export class UserService {
     });
   }
 
-  static async createUser({ username, walletAddress, email }: CreateUserDto) {
+  static async createUser({ username, walletAddress, email, name, surnames }: CreateUserDto) {
     return prisma.user.create({
-      data: { username, walletAddress, email, }
+      data: { username, walletAddress, email, name, surnames }
     });
   }
 

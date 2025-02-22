@@ -12,6 +12,13 @@ export class RegisterDto {
   @IsOptional()
   email!: string;
 
+  @IsNotEmpty()
+  @IsString()
+  name!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  surnames!: string;
 }
 
 export class LoginDto {

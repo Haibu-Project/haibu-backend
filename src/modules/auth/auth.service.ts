@@ -12,9 +12,11 @@ export class AuthService {
     username,
     walletAddress,
     email,
+    surnames,
+    name,
   }: RegisterDto) {
     return prisma.user.create({
-      data: { username, walletAddress, email },
+      data: { username, walletAddress, email, name, surnames },
     });
   }
 

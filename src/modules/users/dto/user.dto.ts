@@ -12,6 +12,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email!: string;
+  @IsNotEmpty()
+  @IsString()
+  name!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  surnames!: string;
 
 }
 
@@ -23,6 +30,13 @@ export class UpdateUserDto {
     @IsOptional()
     @IsEmail()
     email?: string;
+    @IsNotEmpty()
+    @IsString()
+    name!: string;
+  
+    @IsNotEmpty()
+    @IsString()
+    surnames!: string;
   }
   export class ValidateUserDto {
     @IsNotEmpty()
