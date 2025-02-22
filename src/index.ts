@@ -7,12 +7,16 @@ import prisma from "./database/prisma";
 import userRoutes from "./modules/users/user.routes";
 import postRoutes from "./modules/posts/post.routes";
 import followRoutes from "./modules/follows/follow.routes";
-import { setupSwagger } from "./config/swagger";
 import likeRoutes from "./modules/likes/like.routes";
+import { setupSwagger } from "./config/swagger";
+import { setupWebSocket } from "./websocket/index";
+import { createServer } from "http";
 
 dotenv.config(); // Load environment variables from .env file
 
 const app = express();
+const server = createServer(app); // 🛑 Crear un servidor HTTP para WebSockets
+
 app.set("trust proxy", 1); // Necessary for Railway proxy support
 
 // 🔐 Security Middlewares
@@ -59,9 +63,12 @@ app.use("/api/follows", followRoutes);
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
 
+// 🔌 Configurar WebSockets
+setupWebSocket(server);
+
 // 🚀 Start Server with Railway Compatibility
-const PORT = Number(process.env.PORT) || 5000; // Convert string to number to fix TypeScript issue
-app.listen(PORT, "0.0.0.0", async () => { // Ensure Railway assigns the right port
+const PORT = Number(process.env.PORT) || 5000;
+server.listen(PORT, async () => { // Usamos `server.listen` en lugar de `app.listen`
   await connectDB();
   console.log(`🚀 Server running on port ${PORT}`);
 });

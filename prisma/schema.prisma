@@ -112,3 +112,10 @@ model Follow {
 
   @@unique([followerId, followingId])
 }
+
+model Click {
+  id          String   @id @default(uuid())
+  walletAddress String
+  createdAt   DateTime @default(now())
+  isJar       Boolean  @default(false)
+}
