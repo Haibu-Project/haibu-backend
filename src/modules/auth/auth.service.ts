@@ -12,11 +12,9 @@ export class AuthService {
     username,
     walletAddress,
     email,
-    password,
   }: RegisterDto) {
-    const hashedPassword = await bcrypt.hash(password, 10);
     return prisma.user.create({
-      data: { username, walletAddress, email, password: hashedPassword },
+      data: { username, walletAddress, email },
     });
   }
 

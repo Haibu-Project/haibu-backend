@@ -84,7 +84,6 @@ model User {
   username      String
   walletAddress String        @unique
   email         String        @unique
-  password      String
   createdAt     DateTime      @default(now())
 
   sessions      Session[]
@@ -116,6 +115,6 @@ model Follow {
 model Click {
   id          String   @id @default(uuid())
   walletAddress String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime
   isJar       Boolean  @default(false)
 }
