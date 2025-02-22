@@ -6,7 +6,7 @@ export const followUser = async (req: Request, res: Response): Promise<void> => 
     const { followerId, followingId } = req.body;
     const follow = await FollowService.followUser(followerId, followingId);
     res.status(201).json({ message: "Followed successfully", follow });
-  } catch (error) {
+  } catch (error:any) {
     res.status(400).json({ error: error.message });
   }
 };
@@ -16,7 +16,7 @@ export const unfollowUser = async (req: Request, res: Response): Promise<void> =
     const { followerId, followingId } = req.body;
     await FollowService.unfollowUser(followerId, followingId);
     res.status(200).json({ message: "Unfollowed successfully" });
-  } catch (error) {
+  } catch (error:any) {
     res.status(400).json({ error: error.message });
   }
 };
