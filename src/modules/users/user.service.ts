@@ -16,10 +16,9 @@ export class UserService {
     });
   }
 
-  static async createUser({ username, walletAddress, email, password }: CreateUserDto) {
-    const hashedPassword = await hashPassword(password);
+  static async createUser({ username, walletAddress, email }: CreateUserDto) {
     return prisma.user.create({
-      data: { username, walletAddress, email, password: hashedPassword }
+      data: { username, walletAddress, email, }
     });
   }
 
@@ -34,11 +33,10 @@ export class UserService {
     return prisma.user.delete({ where: { id } });
   }
 
-  static async validateUser({ email, password }: ValidateUserDto) {
+  static async validateUser({ email }: ValidateUserDto) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return null;
 
-    const isValid = await verifyPassword(password, user.password);
-    return isValid ? user : null;
+    return user;
   }
 }
