@@ -18,9 +18,5 @@ export class LoginDto {
   @IsNotEmpty()
   @IsString()
   walletAddress!: string;
-
-  @IsNotEmpty()
-  @MinLength(6)
-  password!: string;
 }
 

@@ -18,12 +18,9 @@ export class AuthService {
     });
   }
 
-  static async login({ walletAddress, password }: LoginDto) {
+  static async login({ walletAddress }: LoginDto) {
     const user = await prisma.user.findUnique({ where: { walletAddress } });
     if (!user) return null;
-  
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return null; 
   
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, {
       expiresIn: "24h",
