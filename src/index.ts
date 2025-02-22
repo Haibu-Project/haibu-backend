@@ -6,6 +6,7 @@ import rateLimit from "express-rate-limit";
 import prisma from "./database/prisma";
 import userRoutes from "./modules/users/user.routes";
 import postRoutes from "./modules/posts/post.routes";
+import followRoutes from "./modules/follows/follow.routes";
 import { setupSwagger } from "./config/swagger";
 import likeRoutes from "./modules/likes/like.routes";
 
@@ -53,6 +54,7 @@ app.get("/health", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);
+app.use("/api/follows", followRoutes);
 
 // 📝 Swagger Documentation Setup
 setupSwagger(app);

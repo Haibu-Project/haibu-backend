@@ -91,8 +91,24 @@ model User {
   posts         Post[]
   comments      Comment[]
   likes         Like[]
-  commentLikes  CommentLike[] // Fix: renamed to lowercase for consistency
+  commentLikes  CommentLike[] 
 
   sentNotifications     Notification[] @relation(name: "SenderNotifications")
   receivedNotifications Notification[] @relation(name: "RecipientNotifications")
+
+  followers Follow[] @relation(name: "FollowingRelation") // Usuarios que siguen a este usuario
+  following Follow[] @relation(name: "FollowerRelation") // Usuarios a los que este usuario sigue
+}
+
+
+model Follow {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower   User @relation(name: "FollowerRelation", fields: [followerId], references: [id], onDelete: Cascade)
+  following  User @relation(name: "FollowingRelation", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
 }
