@@ -8,6 +8,7 @@ import userRoutes from "./modules/users/user.routes";
 import postRoutes from "./modules/posts/post.routes";
 import followRoutes from "./modules/follows/follow.routes";
 import likeRoutes from "./modules/likes/like.routes";
+import AuthRoutes from "./modules/auth/auth.routes"
 import { setupSwagger } from "./config/swagger";
 import { setupWebSocket } from "./websocket/index";
 import { createServer } from "http";
@@ -59,7 +60,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/follows", followRoutes);
-
+app.use("api/auth", AuthRoutes)
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
 
