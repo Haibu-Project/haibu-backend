@@ -60,7 +60,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/likes", likeRoutes);
 app.use("/api/follows", followRoutes);
-app.use("api/auth", AuthRoutes)
+app.use("/api/auth", AuthRoutes)
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
 
