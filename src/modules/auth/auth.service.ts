@@ -20,8 +20,8 @@ export class AuthService {
     });
   }
 
-  static async login({ walletAddress }: LoginDto) {
-    const user = await prisma.user.findUnique({ where: { walletAddress } });
+  static async login({ email }: LoginDto) {
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) return null;
   
     const token = jwt.sign({ userId: user.id }, SECRET_KEY, {

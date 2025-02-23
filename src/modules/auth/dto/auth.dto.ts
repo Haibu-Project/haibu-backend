@@ -24,6 +24,6 @@ export class RegisterDto {
 export class LoginDto {
   @IsNotEmpty()
   @IsString()
-  walletAddress!: string;
+  email!: string;
 }
 
