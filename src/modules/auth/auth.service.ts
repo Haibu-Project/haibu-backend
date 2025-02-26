@@ -39,6 +39,10 @@ export class AuthService {
   }
   
 
+  static async findByWallet(walletAddress: string) {
+    return await prisma.user.findUnique({ where: { walletAddress } });
+  }
+
   static async logout(userId: string) {
     await prisma.session.delete({ where: { userId } });
     return { message: "User logged out successfully" };

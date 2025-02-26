@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { register, login } from "./auth.controller";
+import { register, login, checkUserExists } from "./auth.controller";
 import { validateDto } from "../../middleware/validate-dto.middleware";
 import { RegisterDto, LoginDto } from "./dto/auth.dto";
 
@@ -77,5 +77,7 @@ router.post("/register", validateDto(RegisterDto), register);
  *         description: Internal server error.
  */
 router.post("/login", validateDto(LoginDto), login);
+
+router.get("/exists/:walletAddress", checkUserExists);
 
 export default router;

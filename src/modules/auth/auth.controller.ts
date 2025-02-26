@@ -30,3 +30,24 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ error: "Failed to login" });
   }
 };
+
+export const checkUserExists = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { walletAddress } = req.params;
+    if (!walletAddress) {
+      res.status(400).json({ error: "Wallet address is required" });
+      return;
+    }
+
+    const user = await AuthService.findByWallet(walletAddress);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    res.json({ message: "User exists", user });
+  } catch (error) {
+    console.error("Error checking user:", error);
+    res.status(500).json({ error: "Failed to check user" });
+  }
+};
