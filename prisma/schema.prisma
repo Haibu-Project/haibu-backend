@@ -80,25 +80,36 @@ model Notification {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  username      String
-  name       String  @default("Unknown")
-  surnames   String  @default("Unknown")
-  walletAddress String        @unique
-  email         String        @unique
-  createdAt     DateTime      @default(now())
+  id        String   @id @default(uuid())
+  username  String
+  name      String  @default("Unknown")
+  surnames  String  @default("Unknown")
+  walletAddress String @unique
+  email     String  @unique
+  createdAt DateTime @default(now())
 
-  sessions      Session[]
-  posts         Post[]
-  comments      Comment[]
-  likes         Like[]
-  commentLikes  CommentLike[] 
+  sessions  Session[]
+  posts     Post[]
+  comments  Comment[]
+  likes     Like[]
+  commentLikes CommentLike[]
 
   sentNotifications     Notification[] @relation(name: "SenderNotifications")
   receivedNotifications Notification[] @relation(name: "RecipientNotifications")
 
-  followers Follow[] @relation(name: "FollowingRelation") // Usuarios que siguen a este usuario
-  following Follow[] @relation(name: "FollowerRelation") // Usuarios a los que este usuario sigue
+  followers Follow[] @relation(name: "FollowingRelation")
+  following Follow[] @relation(name: "FollowerRelation")
+
+  clicks Click[]
+}
+
+model Click {
+  id        String   @id @default(uuid())
+  email     String
+  createdAt DateTime @default(now())
+  isJar     Boolean  @default(false)
+
+  user      User     @relation(fields: [email], references: [email], onDelete: Cascade)
 }
 
 
@@ -112,11 +123,4 @@ model Follow {
   following  User @relation(name: "FollowingRelation", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@unique([followerId, followingId])
-}
-
-model Click {
-  id          String   @id @default(uuid())
-  walletAddress String
-  createdAt   DateTime
-  isJar       Boolean  @default(false)
 }

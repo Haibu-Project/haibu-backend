@@ -9,18 +9,18 @@ export function setupWebSocket(server: any) {
   io.on("connection", (socket) => {
     console.log(`⚡ WebSocket connected: ${socket.id}`);
 
-    socket.on("click", async (data: { walletAddress: string; isJar: boolean; timestamp: number }) => {
+    socket.on("click", async (data: { email: string; isJar: boolean; timestamp: number }) => {
         try {
           await prisma.click.create({
             data: {
-              walletAddress: data.walletAddress,
+              email: data.email,
               isJar: data.isJar,
-              createdAt: new Date(data.timestamp), // 🕒 Guardar el timestamp del frontend
+              createdAt: new Date(data.timestamp),
             },
           });
       
-          const totalScore = await calculateScore(data.walletAddress);
-          io.emit("updateScore", { walletAddress: data.walletAddress, totalScore });
+          const totalScore = await calculateScore(data.email);
+          io.emit("updateScore", { email: data.email, totalScore });
         } catch (error) {
           console.error("Error saving click:", error);
         }
@@ -31,9 +31,10 @@ export function setupWebSocket(server: any) {
     });
   });
 }
-async function calculateScore(walletAddress: string): Promise<number> {
+
+async function calculateScore(email: string): Promise<number> {
   const clicks = await prisma.click.findMany({
-    where: { walletAddress },
+    where: { email },
   });
 
   return clicks.reduce((score, click) => score + (click.isJar ? 10 : 1), 0);
