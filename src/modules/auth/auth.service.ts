@@ -39,8 +39,8 @@ export class AuthService {
   }
   
 
-  static async findByWallet(walletAddress: string) {
-    return await prisma.user.findUnique({ where: { walletAddress } });
+  static async findByEmail(email: string) {
+    return await prisma.user.findUnique({ where: { email } });
   }
 
   static async logout(userId: string) {

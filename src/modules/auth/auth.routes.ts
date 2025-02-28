@@ -78,6 +78,6 @@ router.post("/register", validateDto(RegisterDto), register);
  */
 router.post("/login", validateDto(LoginDto), login);
 
-router.get("/exists/:walletAddress", checkUserExists);
+router.get("/exists/:email", checkUserExists);
 
 export default router;

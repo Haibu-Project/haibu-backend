@@ -33,13 +33,13 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
 export const checkUserExists = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { walletAddress } = req.params;
-    if (!walletAddress) {
+    const { email } = req.params;
+    if (!email) {
       res.status(400).json({ error: "Wallet address is required" });
       return;
     }
 
-    const user = await AuthService.findByWallet(walletAddress);
+    const user = await AuthService.findByEmail(email);
     if (!user) {
       res.status(404).json({ error: "User not found" });
       return;
