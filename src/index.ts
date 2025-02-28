@@ -11,6 +11,7 @@ import likeRoutes from "./modules/likes/like.routes";
 import AuthRoutes from "./modules/auth/auth.routes";
 import ClickRoutes from "./modules/clicks/click.routes";
 import CommentRoutes from "./modules/comments/comment.routes";
+import chatRoutes from "./modules/messaging/chat/chat.routes";
 import { setupSwagger } from "./config/swagger";
 import { setupWebSocket } from "./websocket/index";
 import { createServer } from "http";
@@ -65,6 +66,8 @@ app.use("/api/follows", followRoutes);
 app.use("/api/auth", AuthRoutes);
 app.use("/api/clicks", ClickRoutes);
 app.use("/api/comments", CommentRoutes);
+app.use("/api/chats", chatRoutes);
+
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
 

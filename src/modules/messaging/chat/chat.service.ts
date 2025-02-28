@@ -41,4 +41,8 @@ export class ChatService {
       include: { participants: { include: { user: true } } },
     });
   }
+
+  static async deleteChat(chatId: string) {
+    return prisma.chat.delete({ where: { id: chatId } });
+  }
 }
