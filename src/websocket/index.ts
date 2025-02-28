@@ -23,7 +23,8 @@ export function setupWebSocket(server: any) {
     });
 
     socket.on("searchUsers", async ({ query }, callback) => {
-      console.log(query)
+      console.log(`🔎 Buscando usuarios con query: ${query}`);
+    
       try {
         const users = await prisma.user.findMany({
           where: {
@@ -38,12 +39,18 @@ export function setupWebSocket(server: any) {
           },
           take: 10,
         });
-        callback(users);
+    
+        if (typeof callback === "function") {
+          callback(users);
+        }
       } catch (error) {
-        console.error("Error searching users:", error);
-        callback([]);
+        console.error("❌ Error searching users:", error);
+        if (typeof callback === "function") {
+          callback([]);
+        }
       }
     });
+    
 
     socket.on("disconnect", () => {
       console.log(`❌ WebSocket disconnected: ${socket.id}`);
