@@ -23,6 +23,7 @@ export function setupWebSocket(server: any) {
     });
 
     socket.on("searchUsers", async ({ query }, callback) => {
+      console.log(query)
       try {
         const users = await prisma.user.findMany({
           where: {
@@ -37,7 +38,6 @@ export function setupWebSocket(server: any) {
           },
           take: 10,
         });
-
         callback(users);
       } catch (error) {
         console.error("Error searching users:", error);
