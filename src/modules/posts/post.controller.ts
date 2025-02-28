@@ -36,6 +36,7 @@ export const getPostById = async (req: Request, res: Response): Promise<void> =>
 export const createPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, content, userId } = req.body;
+    console.log(req.body);
     if (!title || !content || !userId) {
       res.status(400).json({ error: "All fields are required" });
       return;
@@ -44,6 +45,7 @@ export const createPost = async (req: Request, res: Response): Promise<void> => 
     const newPost = await PostService.createPost(title, content, userId);
     res.status(201).json({ message: "Post created successfully", post: newPost });
   } catch (error) {
+    console.error(error);
     res.status(400).json({ error: "Post creation failed" });
   }
 };
