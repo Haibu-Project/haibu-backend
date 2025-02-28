@@ -8,36 +8,30 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String
-  name      String  @default("Unknown")
-  surnames  String  @default("Unknown")
-  walletAddress String @unique
-  email     String  @unique
-  createdAt DateTime @default(now())
-
-  sessions  Session[]
-  posts     Post[]
-  comments  Comment[]
-  likes     Like[]
-  commentLikes CommentLike[]
-
-  chatParticipants ChatParticipants[]
-  messages         Message[]
-
-  sentNotifications     Notification[] @relation(name: "SenderNotifications")
-  receivedNotifications Notification[] @relation(name: "RecipientNotifications")
-
-  followers Follow[] @relation(name: "FollowingRelation")
-  following Follow[] @relation(name: "FollowerRelation")
-
-  clicks Click[]
+  id                    String             @id @default(uuid())
+  username              String
+  createdAt             DateTime           @default(now())
+  walletAddress         String             @unique
+  email                 String             @unique
+  name                  String             @default("Unknown")
+  surnames              String             @default("Unknown")
+  chatParticipants      ChatParticipants[]
+  clicks                Click[]
+  comments              Comment[]
+  commentLikes          CommentLike[]
+  following             Follow[]           @relation("FollowerRelation")
+  followers             Follow[]           @relation("FollowingRelation")
+  likes                 Like[]
+  messages              Message[]
+  receivedNotifications Notification[]     @relation("RecipientNotifications")
+  sentNotifications     Notification[]     @relation("SenderNotifications")
+  posts                 Post[]
+  sessions              Session?
 }
 
 model Chat {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  
+  id           String             @id @default(uuid())
+  createdAt    DateTime           @default(now())
   participants ChatParticipants[]
   messages     Message[]
 }
@@ -46,22 +40,20 @@ model ChatParticipants {
   id     String @id @default(uuid())
   chatId String
   userId String
+  chat   Chat   @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  chat Chat @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([chatId, userId]) // Evita duplicación de usuarios en un chat
+  @@unique([chatId, userId])
 }
 
 model Message {
   id        String   @id @default(uuid())
-  content   String
   senderId  String
-  chatId    String
+  content   String
   createdAt DateTime @default(now())
-
-  sender    User  @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  chat      Chat  @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model Follow {
@@ -69,9 +61,8 @@ model Follow {
   followerId  String
   followingId String
   createdAt   DateTime @default(now())
-
-  follower   User @relation(name: "FollowerRelation", fields: [followerId], references: [id], onDelete: Cascade)
-  following  User @relation(name: "FollowingRelation", fields: [followingId], references: [id], onDelete: Cascade)
+  follower    User     @relation("FollowerRelation", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("FollowingRelation", fields: [followingId], references: [id], onDelete: Cascade)
 
   @@unique([followerId, followingId])
 }
@@ -81,34 +72,31 @@ model Like {
   userId    String
   postId    String
   createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, postId]) // Un usuario solo puede dar like una vez
+  @@unique([userId, postId])
 }
 
 model Post {
-  id        String   @id @default(uuid())
-  title     String
+  id        String    @id @default(uuid())
   content   String
   userId    String
-  createdAt DateTime @default(now())
-
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments Comment[]
-  likes    Like[]
+  createdAt DateTime  @default(now())
+  title     String
+  comments  Comment[]
+  likes     Like[]
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
-  id        String   @id @default(uuid())
-  content   String
-  userId    String
-  postId    String
-  createdAt DateTime @default(now())
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String        @id @default(uuid())
+  content      String
+  userId       String
+  postId       String
+  createdAt    DateTime      @default(now())
   post         Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   commentLikes CommentLike[]
 }
 
@@ -117,25 +105,23 @@ model CommentLike {
   userId    String
   commentId String
   createdAt DateTime @default(now())
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, commentId]) // Un usuario solo puede dar like una vez
+  @@unique([userId, commentId])
 }
 
 model Notification {
   id          String   @id @default(uuid())
   recipientId String
   senderId    String
-  type        String // "LIKE_POST", "NEW_COMMENT"
+  type        String
   postId      String?
   commentId   String?
   isRead      Boolean  @default(false)
   createdAt   DateTime @default(now())
-
-  recipient User @relation(name: "RecipientNotifications", fields: [recipientId], references: [id], onDelete: Cascade)
-  sender    User @relation(name: "SenderNotifications", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("RecipientNotifications", fields: [recipientId], references: [id], onDelete: Cascade)
+  sender      User     @relation("SenderNotifications", fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model Session {
@@ -144,15 +130,13 @@ model Session {
   token     String
   expiresAt DateTime
   createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Click {
   id        String   @id @default(uuid())
-  email     String
   createdAt DateTime @default(now())
   isJar     Boolean  @default(false)
-
+  email     String
   user      User     @relation(fields: [email], references: [email], onDelete: Cascade)
 }

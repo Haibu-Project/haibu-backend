@@ -2,31 +2,43 @@ import prisma from "../../../database/prisma";
 
 export class ChatService {
   static async findOrCreateChat(userA: string, userB: string) {
-    let chat = await prisma.chat.findFirst({
+    // Buscar un chat existente entre los dos usuarios
+    const existingChat = await prisma.chat.findFirst({
       where: {
         participants: {
-          every: { userId: { in: [userA, userB] } }
-        }
-      }
+          every: {
+            userId: { in: [userA, userB] },
+          },
+        },
+      },
+      include: {
+        participants: true,
+      },
     });
 
-    if (!chat) {
-      chat = await prisma.chat.create({
-        data: {
-          participants: {
-            create: [{ userId: userA }, { userId: userB }]
-          }
-        }
-      });
+    if (existingChat) {
+      return existingChat;
     }
 
-    return chat;
+    // Si no existe, crear un nuevo chat
+    const newChat = await prisma.chat.create({
+      data: {
+        participants: {
+          create: [{ userId: userA }, { userId: userB }],
+        },
+      },
+      include: {
+        participants: true,
+      },
+    });
+
+    return newChat;
   }
 
   static async getUserChats(userId: string) {
     return prisma.chat.findMany({
       where: { participants: { some: { userId } } },
-      include: { participants: { include: { user: true } } }
+      include: { participants: { include: { user: true } } },
     });
   }
 }

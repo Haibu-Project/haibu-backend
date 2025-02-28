@@ -56,11 +56,12 @@ export function setupWebSocket(server: any) {
 
     socket.on("createChat", async ({ userA, userB }) => {
       try {
-        console.log(userA, userB);
+        console.log("Creating chat between:", userA, userB);
         const chat = await ChatService.findOrCreateChat(userA, userB);
-        socket.emit("chatCreated", chat);
+        callback(chat);
       } catch (error) {
         console.error("Error creating chat:", error);
+        callback(null); // Devuelve null en caso de error
       }
     });
 
