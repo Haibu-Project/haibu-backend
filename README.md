@@ -1,4 +1,17 @@
-# 🚀 Social Network Backend
+# 🐝 Haibu - The Future of Decentralized Social Networking 🚀
+
+Haibu is a **community-driven decentralized social network** built on **Celestia**. Unlike traditional platforms, Haibu operates with a **DAO governance model**, giving users control over their data, interactions, and the evolution of the platform.
+
+---
+
+## 🌟 Key Features
+
+- **🗳️ DAO Governance:** Decision-making through $HAI token-based voting.
+- **🏆 Gamified Engagement:** Earn $HAI tokens by participating in campaigns.
+- **💻 Open-Source Development:** Contribute, solve issues, and get rewarded.
+- **💬 Social Interactions:** Post "Hai" (similar to tweets), like, comment, and share content.
+- **🔒 Blockchain-Powered Security:** Built on **Celestia** & **Chopin Framework** for transparency and data integrity.
+# 🚀 Haibu Backend
 
 This is a **Node.js** backend for a social network, built with **Express.js**, **Prisma**, and **PostgreSQL**. It provides RESTful API endpoints for user authentication, posting content, and interacting with the platform.
 
