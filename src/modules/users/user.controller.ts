@@ -4,8 +4,6 @@ import { CreateUserDto, UpdateUserDto, ValidateUserDto } from "./dto/user.dto";
 import { validateDto } from "../../middleware/validate-dto.middleware";
 
 
-
-
 export const getHealth = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ message: "User service is up and running" });
 }
