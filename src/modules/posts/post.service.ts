@@ -27,6 +27,14 @@ export class PostService {
     });
   }
 
+  static async getPostsByUserId(userId: string) {
+    return prisma.post.findMany({
+      where: { userId },
+      include: { user: { select: { id: true, username: true } } },
+      orderBy: { createdAt: "desc" }
+    });
+  }
+  
   static async deletePost(id: string) {
     return prisma.post.delete({
       where: { id }

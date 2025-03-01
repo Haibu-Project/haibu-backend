@@ -13,6 +13,18 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
+
+
+export const getPostsByUserId = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userId } = req.params;
+    const posts = await PostService.getPostsByUserId(userId);
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch posts by user" });
+  }
+};
+
 /**
  * Get a post by ID.
  */

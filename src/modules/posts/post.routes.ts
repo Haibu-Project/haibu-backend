@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllPosts, getPostById, createPost, updatePost, deletePost } from "./post.controller";
+import { getAllPosts, getPostById, createPost, updatePost, deletePost, getPostsByUserId } from "./post.controller";
 import { validateDto } from "../../middleware/validate-dto.middleware";
 import { CreatePostDto, UpdatePostDto } from "./dto/post.dto";
 
@@ -79,5 +79,9 @@ router.put("/:id", validateDto(UpdatePostDto), updatePost);
  *           type: string
  */
 router.delete("/:id", deletePost);
+
+
+router.get("/user/:userId", getPostsByUserId);
+
 
 export default router;
