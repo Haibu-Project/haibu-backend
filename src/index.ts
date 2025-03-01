@@ -13,6 +13,7 @@ import ClickRoutes from "./modules/clicks/click.routes";
 import CommentRoutes from "./modules/comments/comment.routes";
 import chatRoutes from "./modules/messaging/chat/chat.routes";
 import { setupSwagger } from "./config/swagger";
+import MessagesRoutes from "./modules/messaging/message/message.routes";
 import { setupWebSocket } from "./websocket/index";
 import { createServer } from "http";
 
@@ -67,6 +68,7 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/clicks", ClickRoutes);
 app.use("/api/comments", CommentRoutes);
 app.use("/api/chats", chatRoutes);
+app.use("/api/messages", MessagesRoutes);
 
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
