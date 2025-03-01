@@ -13,7 +13,7 @@ import ClickRoutes from "./modules/clicks/click.routes";
 import CommentRoutes from "./modules/comments/comment.routes";
 import chatRoutes from "./modules/messaging/chat/chat.routes";
 import { setupSwagger } from "./config/swagger";
-import MessagesRoutes from "./modules/messaging/message/message.routes";
+import MessagesRoutes from "./modules/messaging/message/message.controller";
 import { setupWebSocket } from "./websocket/index";
 import { createServer } from "http";
 
