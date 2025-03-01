@@ -13,6 +13,7 @@ export class AuthService {
     walletAddress,
     email,
     surnames,
+    image,
     name,
   }: RegisterDto) {
     return prisma.user.create({

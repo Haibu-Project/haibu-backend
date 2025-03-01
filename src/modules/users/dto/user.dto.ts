@@ -12,7 +12,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email!: string;
-  
+
   @IsNotEmpty()
   @IsString()
   name!: string;
@@ -21,27 +21,34 @@ export class CreateUserDto {
   @IsString()
   surnames!: string;
 
+  @IsNotEmpty()
+  @IsString()
+  image?: string;
 }
 
 export class UpdateUserDto {
-    @IsOptional()
-    @IsString()
-    username?: string;
-  
-    @IsOptional()
-    @IsEmail()
-    email?: string;
-    @IsNotEmpty()
-    @IsString()
-    name!: string;
-  
-    @IsNotEmpty()
-    @IsString()
-    surnames!: string;
-  }
-  export class ValidateUserDto {
-    @IsNotEmpty()
-    @IsEmail()
-    email!: string;
-  }
-  
+  @IsOptional()
+  @IsString()
+  username?: string;
+
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+  @IsNotEmpty()
+  @IsString()
+  name!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  surnames!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  image?: string;
+}
+
+export class ValidateUserDto {
+  @IsNotEmpty()
+  @IsEmail()
+  email!: string;
+}

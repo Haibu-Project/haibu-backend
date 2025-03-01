@@ -15,6 +15,7 @@ model User {
   email                 String             @unique
   name                  String             @default("Unknown")
   surnames              String             @default("Unknown")
+  image                 String             @default("https://github-production-user-asset-6210df.s3.amazonaws.com/115122095/418201084-4f10021b-e424-42bb-bc55-62c98541afad.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250228%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250228T234456Z&X-Amz-Expires=300&X-Amz-Signature=58a7f5ec28dafb99e72ca05f14eca5ccc62c1fed82e58ad73c86a35c15b0522e&X-Amz-SignedHeaders=host")
   chatParticipants      ChatParticipants[]
   clicks                Click[]
   comments              Comment[]
@@ -28,6 +29,7 @@ model User {
   posts                 Post[]
   sessions              Session?
 }
+
 
 model Chat {
   id           String             @id @default(uuid())

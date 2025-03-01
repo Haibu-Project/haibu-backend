@@ -19,6 +19,11 @@ export class RegisterDto {
   @IsNotEmpty()
   @IsString()
   surnames!: string;
+
+  @IsNotEmpty()
+  @IsString()
+  image?: string;
+  
 }
 
 export class LoginDto {
