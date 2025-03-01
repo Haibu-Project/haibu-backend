@@ -68,7 +68,7 @@ app.use("/api/auth", AuthRoutes);
 app.use("/api/clicks", ClickRoutes);
 app.use("/api/comments", CommentRoutes);
 app.use("/api/chats", chatRoutes);
-app.use("/api/messages", MessagesRoutes);
+app.use("/api", MessagesRoutes);
 
 // 📝 Swagger Documentation Setup
 setupSwagger(app);
