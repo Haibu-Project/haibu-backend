@@ -21,7 +21,8 @@ export class CreateUserDto {
   @IsString()
   surnames!: string;
 
-  @IsNotEmpty()
+
+  @IsOptional()
   @IsString()
   image?: string;
 }

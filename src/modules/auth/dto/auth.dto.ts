@@ -20,7 +20,7 @@ export class RegisterDto {
   @IsString()
   surnames!: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   image?: string;
   
