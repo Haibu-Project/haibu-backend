@@ -10,7 +10,7 @@ export class CommentService {
   static async getCommentsByPostId(postId: string) {
     return prisma.comment.findMany({
       where: { postId },
-      include: { user: { select: { id: true, username: true } } }
+      include: { user: { select: { id: true, username: true, image:true } } }
     });
   }
 
