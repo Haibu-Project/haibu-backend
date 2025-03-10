@@ -25,6 +25,10 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   image?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 }
 
 export class UpdateUserDto {
@@ -46,6 +50,12 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @IsString()
   image?: string;
+  
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  
 }
 
 export class ValidateUserDto {
