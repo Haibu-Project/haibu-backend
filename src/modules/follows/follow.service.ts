@@ -20,7 +20,7 @@ export class FollowService {
   static async getFollowers(userId: string) {
     return prisma.follow.findMany({
       where: { followingId: userId },
-      include: { follower: { select: { id: true, username: true } } },
+      include: { follower: { select: { id: true, username: true, image:true, } } },
     });
   }
 
