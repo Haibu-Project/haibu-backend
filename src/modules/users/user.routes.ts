@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getAllUsers, getUserById, createUser, deleteUser, updateUser, getHealth } from "./user.controller";
+import { getAllUsers, getUserById, createUser, deleteUser, updateUser, getHealth, getUserByUsername } from "./user.controller";
 
 const router = Router();
 
 
 
 router.get("/health", getHealth);
+
+router.get("/username/:username", getUserByUsername);
 
 /**
  * @swagger

@@ -9,6 +9,13 @@ export class UserService {
     });
   }
 
+  static async getUserByUsername(username: string){
+    return prisma.user.findUnique({
+      where: { username },
+      select: { id: true, username: true, email: true, createdAt: true, walletAddress: true, image: true, description: true, posts: true, comments: true }
+    });
+  }
+
   static async getUserById(id: string) {
     return prisma.user.findUnique({
       where: { id },
