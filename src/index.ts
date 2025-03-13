@@ -25,7 +25,8 @@ const server = createServer(app); // 🛑 Crear un servidor HTTP para WebSockets
 app.set("trust proxy", 1); // Necessary for Railway proxy support
 
 // 🔐 Security Middlewares
-app.use(express.json()); // Parse JSON requests
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({ origin: "*" })); // Allow all origins for CORS
 // app.use(helmet()); // (Disabled for now - Uncomment if needed)
 
