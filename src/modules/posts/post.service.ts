@@ -3,7 +3,7 @@ import prisma from "../../database/prisma";
 export class PostService {
   static async getAllPosts() {
     return prisma.post.findMany({
-      include: { user: { select: { id: true, username: true, email: true } } }
+      include: { user: { select: { id: true, username: true, email: true, image:true, } } }
     });
   }
 
